@@ -1,6 +1,7 @@
 package com.tjoeum.a20191107_numberbaseballgame.adapters
 
 import android.content.Context
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ class ChatAdapter(context: Context, res: Int, list: ArrayList<ChatData>) : Array
     var inf = LayoutInflater.from(mContext)
 
     //생성자
-    constructor(context: Context, list: ArrayList<ChatData>) : this(context, R.layout.chat_list_item, list){}
+    constructor(context: Context, list: ArrayList<ChatData>) : this(context, R.layout.chat_list_item, list)
 
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -28,7 +29,15 @@ class ChatAdapter(context: Context, res: Int, list: ArrayList<ChatData>) : Array
         var row = tempRow!!
 
 
+        if(mList.get(position).speaker == "CPU")
+            row.findViewById<TextView>(R.id.result).gravity = Gravity.LEFT
+        else
+            row.findViewById<TextView>(R.id.result).gravity = Gravity.RIGHT
         row.findViewById<TextView>(R.id.result).text = mList.get(position).message
+
+
+
+
 //        row.findViewById<TextView>(R.id.myInput).text = mList.get(position).speaker
 
 

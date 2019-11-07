@@ -13,6 +13,7 @@ class MainActivity : BaseActivity() {
     var questionNumArray = ArrayList<Int>()
     var chatLists = ArrayList<ChatData>()
     var chatAdapter: ChatAdapter? = null
+    var userInputNumArray = ArrayList<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,37 @@ class MainActivity : BaseActivity() {
 
     }
 
+
+    fun checkAnswer(){
+
+        var strikeCount = 0
+        var ballCount = 0
+
+        for (i in 0..2){
+            for(j in 0..2){
+                if(userInputNumArray.get(i) == questionNumArray.get(j)){
+                    if(i==j){
+                        //strike 증가
+                        strikeCount ++
+                    } else {
+                        //ball 증가
+                        ballCount ++
+                    }
+                }
+            }
+        }
+        chatLists.add(ChatData("${strikeCount}S ${ballCount}B 입니다.", "CPU"))
+
+        if(strikeCount ==3){
+            chatLists.add(ChatData("축하합니다! 정답입니다","CPU"))
+        }
+
+        chatAdapter?.notifyDataSetChanged()
+
+        chatListView.smoothScrollToPosition(chatLists.size-1)
+    }
+
+
     override fun setupEvents() {
 
         inputBtn.setOnClickListener {
@@ -49,7 +81,16 @@ class MainActivity : BaseActivity() {
 
             chatAdapter?.notifyDataSetChanged()
 
+            userInputNumArray.clear()
+
+            userInputNumArray.add(inputNum.toInt() / 100)
+            userInputNumArray.add(inputNum.toInt() / 10 % 10 )
+            userInputNumArray.add(inputNum.toInt() % 10)
+
+            Log.i("userInputNumArray", userInputNumArray.toString())
             chatListView.smoothScrollByOffset(chatLists.size)
+
+            checkAnswer()
         }
 
     }
