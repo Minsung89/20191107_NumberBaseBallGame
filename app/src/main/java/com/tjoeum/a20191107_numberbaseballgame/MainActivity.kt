@@ -1,6 +1,7 @@
 package com.tjoeum.a20191107_numberbaseballgame
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import com.tjoeum.a20191107_numberbaseballgame.adapters.ChatAdapter
 import com.tjoeum.a20191107_numberbaseballgame.datas.ChatData
@@ -49,7 +50,7 @@ class MainActivity : BaseActivity() {
 
         for (i in 0..2){
             for(j in 0..2){
-                if(userInputNumArray.get(i) == questionNumArray.get(j)){
+                if(userInputNumArray[i] == questionNumArray[j]){
                     if(i==j){
                         //strike 증가
                         strikeCount ++
@@ -60,15 +61,21 @@ class MainActivity : BaseActivity() {
                 }
             }
         }
-        chatLists.add(ChatData("${strikeCount}S ${ballCount}B 입니다.", "CPU"))
 
-        if(strikeCount ==3){
-            chatLists.add(ChatData("축하합니다! 정답입니다","CPU"))
-        }
 
-        chatAdapter?.notifyDataSetChanged()
+        Handler().postDelayed({
+            chatLists.add(ChatData("${strikeCount}S ${ballCount}B 입니다.", "CPU"))
 
-        chatListView.smoothScrollToPosition(chatLists.size-1)
+            if(strikeCount ==3){
+                chatLists.add(ChatData("축하합니다! 정답입니다","CPU"))
+            }
+            chatAdapter?.notifyDataSetChanged()
+
+            chatListView.smoothScrollToPosition(chatLists.size-1)
+        },500)
+
+
+
     }
 
 
